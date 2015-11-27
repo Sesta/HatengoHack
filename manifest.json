@@ -1,9 +1,19 @@
 {
   "name": "HatengoHack",
-  "version": "0.0.1",
+  "version": "0.2",
   "manifest_version": 2,
   "description": "すごく面白い拡張",
   "permissions": [ "http://210.140.71.3:8080/" ],
+  "browser_action": {
+    "default_icon": "batloika.png",
+    "default_title": "Batloika"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
   "content_scripts": [
     {
       "matches": [ "http://b.hatena.ne.jp/" ],
@@ -15,5 +25,8 @@
       ],
       "run_at": "document_start"
     }
-  ]
+  ],
+  "icons": {
+    "128": "batloika.png"
+  }
 }
