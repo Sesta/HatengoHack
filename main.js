@@ -2,7 +2,7 @@ $(function(){
   var showed = false;
   var entries = {};
   var entries_ids = [];
-  var wave_colors = d3.scale.linear().domain([-1, 0, 1]).range(["#178BCA", "purple", "#FFDDDD"]);
+  var wave_colors = d3.scale.linear().domain([-1, 0, 1]).range(["#178BCA", "white", "#FFDDDD"]);
   var wave_id = 0;
 
   $( ".entry-unit[data-eid]")
@@ -43,7 +43,7 @@ $(function(){
           ]
         },
         success: function( json ){
-          setWave( null, entries[ json.pages[ 0 ].entry_id ] );
+          setWave( json.pages[0], entries[ json.pages[ 0 ].entry_id ] );
         },
         error: function( err ){
           console.log( err );
@@ -54,7 +54,7 @@ $(function(){
     showed = true;
   } );
 
-  function setWave( wave_param, entry ){
+  function setWave( result, entry ){
     var d3_svg = d3.select( entry.dom )
         .append( "svg" )
         .attr( "id", "wave-" + wave_id )
@@ -69,7 +69,8 @@ $(function(){
         } );
 
     var config = liquidFillGaugeDefaultSettings();
-    config.waveColor = wave_colors( 0.5 );
+    config.waveColor = wave_colors( result.scores.average );
+    config.waveAnimateTime = 1000 * result.nega_posi_words_num;
     var wave = loadLiquidFillGauge("wave-" + wave_id, 50, config, entry.users_num);
 
     $( entry.dom ).find( ".users strong" )
