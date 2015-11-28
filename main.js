@@ -5,6 +5,16 @@ $(function(){
   var wave_colors = d3.scale.linear().domain([-1, 0, 1]).range(["#178BCA", "white", "#FFDDDD"]);
   var wave_id = 0;
 
+  $( "body" ).append( $( "<div></div>", {
+    id: "effect-area"
+  }).css( {
+    "position": "absolute",
+    "top": "0",
+    "left": "0",
+    "height": "100%",
+    "width": "100%"
+  } ) );
+
   $( ".entry-unit[data-eid]")
     .each( function(){
       var $users = $( this ).find( ".users" )
@@ -75,7 +85,34 @@ $(function(){
     $( entry.dom ).find( ".users li" )
       .css( "opacity", "0" );
 
+    $( entry.dom ).append( $( "<button></button>", {
+      "class": "show-comment"
+    } ).css( {
+      "display": "block",
+      "position": "absolute",
+      "top": "10px",
+      "right": "42px",
+      "height": "25px",
+      "z-index": "2"
+    } ).text( "コメントを表示" ) );
+
+    $( entry.dom ).find( ".show-comment" )
+      .click( function(){
+        result.posi_words.forEach( function( word ){
+          showComment( word );
+        } );
+        result.nega_words.forEach( function( word ){
+          showComment( word );
+        } );
+      } );
+
     wave_id ++;
+  }
+
+  function showComment( comment ){
+    $( "#effect-area" ).append( $( "<div></div>", {
+      "class": "comment"
+    } ).text( comment ) );
   }
 });
 
