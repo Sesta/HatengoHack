@@ -4,6 +4,10 @@ $(function(){
   var entries_ids = [];
   var wave_colors = d3.scale.linear().domain([-1, 0, 1]).range(["#178BCA", "white", "#FFDDDD"]);
   var wave_id = 0;
+  var image_urls = {
+    posi: chrome.extension.getURL( "images/posi.png" ),
+    nega: chrome.extension.getURL( "images/nega.png" )
+  };
 
   $( "body" ).append( $( "<div></div>", {
     id: "effect-area"
@@ -14,6 +18,8 @@ $(function(){
     "height": "100%",
     "width": "100%"
   } ) );
+
+  showComment( "test", "posi" );
 
   $( ".entry-unit[data-eid]")
     .each( function(){
@@ -79,7 +85,7 @@ $(function(){
 
     var config = liquidFillGaugeDefaultSettings();
     config.waveColor = wave_colors( result.scores.average );
-    config.waveAnimateTime = 1000 * result.nega_posi_words_num;
+    config.waveAnimateTime = 5 * result.nega_posi_words_num;
     var wave = loadLiquidFillGauge("wave-" + wave_id, 50, config, entry.users_num);
 
     $( entry.dom ).find( ".users li" )
@@ -99,20 +105,46 @@ $(function(){
     $( entry.dom ).find( ".show-comment" )
       .click( function(){
         result.posi_words.forEach( function( word ){
-          showComment( word );
+          showComment( word, "posi" );
         } );
         result.nega_words.forEach( function( word ){
-          showComment( word );
+          showComment( word, "nega" );
         } );
       } );
 
     wave_id ++;
   }
 
-  function showComment( comment ){
-    $( "#effect-area" ).append( $( "<div></div>", {
+  function showComment( comment, nega_or_posi ){
+    var width = 100;
+
+    var $div = $( "<div></div>", {
       "class": "comment"
+    } ).css( {
+      "width": width + "px"
+    } );
+
+    $div.append( $( "<img>", {
+      "src": image_urls[ nega_or_posi ],
+      "width": width + "px"
+    } ).css( {
+      "display": "block",
+      "position": "absolute",
+      "top": "0",
+      "left": "0"
+    } ) );
+
+    $div.append( $( "<div></div>" )
+    .css( {
+      "position": "absolute",
+      "top": "35px",
+      "left": "0",
+      "width": width + "px",
+      "color": "white",
+      "text-align": "center"
     } ).text( comment ) );
+
+    $( "#effect-area" ).append( $div );
   }
 });
 
