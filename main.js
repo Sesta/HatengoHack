@@ -6,7 +6,8 @@ $(function(){
   var wave_id = 0;
   var image_urls = {
     posi: chrome.extension.getURL( "images/posi.png" ),
-    nega: chrome.extension.getURL( "images/nega.png" )
+    nega: chrome.extension.getURL( "images/nega.png" ),
+    batloika: chrome.extension.getURL( "images/batloika.png" )
   };
 
   $( "body" ).append( $( "<div></div>", {
@@ -34,8 +35,8 @@ $(function(){
         svg_height: $users.height(),
         svg_width: $users.width(),
         dom: this,
-        cx: $( this ).position().left * 1.0 + $( this ).width() * 0.5,
-        cy: $( this ).position().top * 1.0 + $( this ).height() * 0.5
+        button_x: $( this ).position().left * 1.0 + $( this ).width() - 100,
+        button_y: $( this ).position().top * 1.0 + 20
       };
 
       entries_ids.push( $( this ).attr( "data-eid" ) );
@@ -90,26 +91,28 @@ $(function(){
     $( entry.dom ).find( ".users li" )
       .css( "opacity", "0" );
 
-    $( entry.dom ).append( $( "<button></button>", {
-      "class": "show-comment"
+    $( entry.dom ).append( $( "<img>", {
+      "class": "show-comment",
+      "src": image_urls.batloika
     } ).css( {
       "display": "block",
       "position": "absolute",
       "top": "10px",
       "right": "42px",
       "height": "25px",
-      "z-index": "2"
-    } ).text( "コメントを表示" ) );
+      "z-index": "2",
+      "cursor": "pointer"
+    } ) );
 
     var comment_range = 500;
 
     $( entry.dom ).find( ".show-comment" )
       .click( function(){
         result.posi_words.forEach( function( word, index ){
-          showComment( word, "posi", entry.cx + comment_range * ( Math.random() - 0.5 ), entry.cy + comment_range * ( Math.random() - 0.5 ), index );
+          showComment( word, "posi", entry.button_x + comment_range * ( Math.random() - 0.5 ), entry.button_y + comment_range * ( Math.random() - 0.5 ), index );
         } );
         result.nega_words.forEach( function( word, index ){
-          showComment( word, "nega", entry.cx + comment_range * ( Math.random() - 0.5 ), entry.cy + comment_range * ( Math.random() - 0.5 ), index );
+          showComment( word, "nega", entry.button_x + comment_range * ( Math.random() - 0.5 ), entry.button_y + comment_range * ( Math.random() - 0.5 ), index );
         } );
       } );
 
@@ -146,7 +149,8 @@ $(function(){
       "left": "0",
       "width": width + "px",
       "color": "white",
-      "text-align": "center"
+      "text-align": "center",
+      "font-family": "ヒラギノ角ゴ StdN"
     } ).text( comment ) );
 
     $( "#effect-area" ).append( $div );
