@@ -16,7 +16,7 @@
   },
   "content_scripts": [
     {
-      "matches": [ "http://b.hatena.ne.jp/" ],
+      "matches": [ "http://b.hatena.ne.jp/*" ],
       "js": [
         "lib/jquery.min.js",
         "lib/d3.min.js",

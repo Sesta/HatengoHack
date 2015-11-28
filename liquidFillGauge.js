@@ -30,11 +30,11 @@ function liquidFillGaugeDefaultSettings(){
     };
 }
 
-function loadLiquidFillGauge(elementId, value, config) {
+function loadLiquidFillGauge(elementId, value, config, users_num) {
     if(config == null) config = liquidFillGaugeDefaultSettings();
 
     var gauge = d3.select("#" + elementId);
-    var radius = Math.min(parseInt(gauge.style("width")), parseInt(gauge.style("height")))/2;
+    var radius = parseInt(gauge.style("width")) / 1.8;
     var locationX = parseInt(gauge.style("width"))/2 - radius;
     var locationY = parseInt(gauge.style("height"))/2 - radius;
     var fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value))/config.maxValue;
@@ -118,14 +118,20 @@ function loadLiquidFillGauge(elementId, value, config) {
         .style("fill", config.circleColor)
         .attr('transform','translate('+radius+','+radius+')');
 
+    var text_right_margin = radius * 0.1 + 21;
+    var text_top_margin = radius + 13;
+    var text_content = users_num + " users";
+    var text_size = 28;
+
     // Text where the wave does not overlap.
     var text1 = gaugeGroup.append("text")
-        .text(textRounder(textStartValue) + percentText)
+        .text( text_content )
+        .style( "font_family", "Arial" )
         .attr("class", "liquidFillGaugeText")
-        .attr("text-anchor", "middle")
-        .attr("font-size", textPixels + "px")
+        .attr("text-anchor", "left")
+        .attr("font-size", text_size )
         .style("fill", config.textColor)
-        .attr('transform','translate('+radius+','+textRiseScaleY(config.textVertPosition)+')');
+        .attr('transform','translate(' + text_right_margin + ','+ text_top_margin +')');
 
     // The clipping wave area.
     var clipArea = d3.svg.area()
@@ -151,26 +157,13 @@ function loadLiquidFillGauge(elementId, value, config) {
 
     // Text where the wave does overlap.
     var text2 = fillCircleGroup.append("text")
-        .text(textRounder(textStartValue) + percentText)
+        .text( text_content )
+        .style( "font_family", "Arial" )
         .attr("class", "liquidFillGaugeText")
-        .attr("text-anchor", "middle")
-        .attr("font-size", textPixels + "px")
+        .attr("text-anchor", "left")
+        .attr("font-size", text_size )
         .style("fill", config.waveTextColor)
-        .attr('transform','translate('+radius+','+textRiseScaleY(config.textVertPosition)+')');
-
-    // Make the value count up.
-    if(config.valueCountUp){
-        var textTween = function(){
-            var i = d3.interpolate(this.textContent, textFinalValue);
-            return function(t) { this.textContent = textRounder(i(t)) + percentText; }
-        };
-        text1.transition()
-            .duration(config.waveRiseTime)
-            .tween("text", textTween);
-        text2.transition()
-            .duration(config.waveRiseTime)
-            .tween("text", textTween);
-    }
+        .attr('transform','translate(' + text_right_margin + ','+ text_top_margin +')');
 
     // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
     var waveGroupXPosition = fillCircleMargin+fillCircleRadius*2-waveClipWidth;
