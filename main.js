@@ -64,8 +64,7 @@ $(function(){
           "left": "0",
           "width": entry.svg_width,
           "height": entry.svg_height,
-          "z-index": "0",
-          "events-pointer": "none"
+          "z-index": "0"
         } );
 
     var config = liquidFillGaugeDefaultSettings();
@@ -73,8 +72,8 @@ $(function(){
     config.waveAnimateTime = 1000 * result.nega_posi_words_num;
     var wave = loadLiquidFillGauge("wave-" + wave_id, 50, config, entry.users_num);
 
-    $( entry.dom ).find( ".users strong" )
-      .css( "visibility", "hidden" );
+    $( entry.dom ).find( ".users li" )
+      .css( "opacity", "0" );
 
     wave_id ++;
   }
