@@ -19,8 +19,6 @@ $(function(){
     "width": "100%"
   } ) );
 
-  showComment( "test", "posi" );
-
   $( ".entry-unit[data-eid]")
     .each( function(){
       var $users = $( this ).find( ".users" )
@@ -36,11 +34,12 @@ $(function(){
         svg_height: $users.height(),
         svg_width: $users.width(),
         dom: this,
+        cx: $( this ).position().left * 1.0 + $( this ).width() * 0.5,
+        cy: $( this ).position().top * 1.0 + $( this ).height() * 0.5
       };
 
       entries_ids.push( $( this ).attr( "data-eid" ) );
     } );
-
 
   chrome.runtime.onMessage.addListener( function( request ) {
     if( showed ) return ;
@@ -102,25 +101,31 @@ $(function(){
       "z-index": "2"
     } ).text( "コメントを表示" ) );
 
+    var comment_range = 500;
+
     $( entry.dom ).find( ".show-comment" )
       .click( function(){
-        result.posi_words.forEach( function( word ){
-          showComment( word, "posi" );
+        result.posi_words.forEach( function( word, index ){
+          showComment( word, "posi", entry.cx + comment_range * ( Math.random() - 0.5 ), entry.cy + comment_range * ( Math.random() - 0.5 ), index );
         } );
-        result.nega_words.forEach( function( word ){
-          showComment( word, "nega" );
+        result.nega_words.forEach( function( word, index ){
+          showComment( word, "nega", entry.cx + comment_range * ( Math.random() - 0.5 ), entry.cy + comment_range * ( Math.random() - 0.5 ), index );
         } );
       } );
 
     wave_id ++;
   }
 
-  function showComment( comment, nega_or_posi ){
+  function showComment( comment, nega_or_posi, pos_x, pos_y, index ){
     var width = 100;
 
     var $div = $( "<div></div>", {
       "class": "comment"
     } ).css( {
+      "display": "none",
+      "position": "absolute",
+      "top": pos_y + "px",
+      "left": pos_x + "px",
       "width": width + "px"
     } );
 
@@ -145,6 +150,11 @@ $(function(){
     } ).text( comment ) );
 
     $( "#effect-area" ).append( $div );
+
+    $div.delay( index * 50 )
+        .fadeIn( 1000 )
+        .delay( 800 )
+        .fadeOut( 2000 );
   }
 });
 
