@@ -51,7 +51,7 @@ $(function(){
 
     var i = 0;
 
-    for( var entry_id in entries ){
+    setInterval( function(){
       $.ajax( {
         type: "POST",
         url: "http://210.140.71.3:8080/negaposi",
@@ -68,7 +68,7 @@ $(function(){
           console.log( err );
         }
       } );
-    }
+    }, 500 );
 
     showed = true;
   } );
