@@ -1,5 +1,23 @@
 $(function(){
   var showed = false;
+  var entries = {};
+
+  $( ".entry-unit[data-eid]")
+    .each( function(){
+      var $users = $( this ).find( ".users" )
+        .css( {
+          "position": "relative",
+          "z-index": "1"
+        } );
+
+      entries[ $( this ).attr( "data-eid" ) ] = {
+        id: $( this ).attr( "data-eid" ),
+        url: $( this ).find( ".entry-contents a" ).attr( "href" ),
+        svg_height: $users.height(),
+        svg_width: $users.width(),
+        dom: this
+      };
+    } );
 
   chrome.runtime.onMessage.addListener( function( request ) {
     if( showed ) return ;
@@ -14,34 +32,27 @@ $(function(){
       }
     } );
 
-    setWave( null );
+    for( entry_id in entries ){
+      setWave( null, entries[ entry_id ] );
+    }
   } );
 
 
 
-  function setWave( wave_param ){
-    var $header = $( ".entry-unit .users" )
-      .css( {
-        "position": "relative",
-        "z-index": "1"
-      } );
-
-    var svg_width = $header.width();
-    var svg_height = $header.height();
-
-    var d3_svg = d3.select( ".entry-unit" )
+  function setWave( wave_param, entry ){
+    var d3_svg = d3.select( entry.dom )
         .append( "svg" )
-        .attr( "id", "wave" )
+        .attr( "id", "wave-" + entry.id )
         .style( {
           "position": "absolute",
           "top": "0",
           "left": "0",
-          "width": svg_width,
-          "height": svg_height,
+          "width": entry.svg_width,
+          "height": entry.svg_height,
           "z-index": "0"
         } );
 
-    var wave = loadLiquidFillGauge("wave", 50);
+    var wave = loadLiquidFillGauge("wave-" + entry.id, 50);
     var config1 = liquidFillGaugeDefaultSettings();
 
     showed = true;
