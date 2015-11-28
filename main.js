@@ -1,6 +1,7 @@
 $(function(){
   var showed = false;
   var entries = {};
+  var wave_colors = d3.scale.linear().domain([-1, 0, 1]).range(["#178BCA", "purple", "#FFDDDD"]);
 
   $( ".entry-unit[data-eid]")
     .each( function(){
@@ -29,7 +30,10 @@ $(function(){
       url: "http://210.140.71.3:8080/negaposi",
       dataType: "json",
       data : {
-        "urls": [ "http://techlife.cookpad.com/entry/2015/11/27/194316" ]
+        "urls": [
+          "http://techlife.cookpad.com/entry/2015/11/27/194316",
+          "http://anond.hatelabo.jp/20151127231648"
+         ]
       },
       success: function( json ){
         console.log( json );
@@ -58,8 +62,9 @@ $(function(){
           "z-index": "0"
         } );
 
-    var wave = loadLiquidFillGauge("wave-" + entry.id, 50, null, entry.users_num);
-    var config1 = liquidFillGaugeDefaultSettings();
+    var config = liquidFillGaugeDefaultSettings();
+    config.waveColor = wave_colors( 0.5 );
+    var wave = loadLiquidFillGauge("wave-" + entry.id, 50, config, entry.users_num);
 
     $( entry.dom ).find( ".users strong" ).remove();
   }
