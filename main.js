@@ -14,20 +14,37 @@ $(function(){
       }
     } );
 
-    var d3_svg = d3.select( "body" )
+    setWave( null );
+  } );
+
+
+
+  function setWave( wave_param ){
+    var $header = $( ".entry-unit .users" )
+      .css( {
+        "position": "relative",
+        "z-index": "1"
+      } );
+
+    var svg_width = $header.width();
+    var svg_height = $header.height();
+
+    var d3_svg = d3.select( ".entry-unit" )
         .append( "svg" )
         .attr( "id", "wave" )
         .style( {
           "position": "absolute",
           "top": "0",
           "left": "0",
+          "width": svg_width,
+          "height": svg_height,
           "z-index": "0"
         } );
 
-    var wave = loadLiquidFillGauge("wave", 55);
+    var wave = loadLiquidFillGauge("wave", 50);
     var config1 = liquidFillGaugeDefaultSettings();
 
     showed = true;
-  } );
+  }
 });
 
