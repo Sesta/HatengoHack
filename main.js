@@ -3,6 +3,8 @@ $(function(){
   var entries = {};
   var entries_ids = [];
   var wave_colors = d3.scale.linear().domain([-1, 0, 1]).range(["#178BCA", "white", "#FFDDDD"]);
+  var text_colors = d3.scale.linear().domain([-1, 1]).range(["#178BCA", "#FFDDDD"]);
+  var wave_text_colors = d3.scale.linear().domain([-1, 1]).range(["#A4DBf8", "#FFAAAA"]);
   var wave_id = 0;
   var image_urls = {
     posi: chrome.extension.getURL( "images/posi.png" ),
@@ -85,7 +87,11 @@ $(function(){
 
     var config = liquidFillGaugeDefaultSettings();
     config.waveColor = wave_colors( result.scores.average );
-    config.waveAnimateTime = 5 * result.nega_posi_words_num;
+    if( result.scores.average > 0 ){
+      config.textColor = "#FF4444";
+      config.waveTextColor = "#FFAAAA";
+    }
+    config.waveAnimateTime = 1000 + 10000.0 / result.nega_posi_words_num;
     var wave = loadLiquidFillGauge("wave-" + wave_id, 50, config, entry.users_num);
 
     $( entry.dom ).find( ".users li" )
