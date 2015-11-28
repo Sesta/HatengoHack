@@ -110,7 +110,7 @@ $(function(){
       "cursor": "pointer"
     } ) );
 
-    var comment_range = 500;
+    var comment_range = Math.sqrt( result.nega_posi_words_num ) * 50 + 100;
 
     $( entry.dom ).find( ".show-comment" )
       .click( function(){

@@ -1,12 +1,12 @@
 {
-  "name": "HatengoHack",
+  "name": "Hatemu",
   "version": "0.2",
   "manifest_version": 2,
-  "description": "すごく面白い拡張",
+  "description": "コメントを解析して可視化します",
   "permissions": [ "http://210.140.71.3:8080/" ],
   "browser_action": {
     "default_icon": "images/batloika.png",
-    "default_title": "Batloika"
+    "default_title": "Hatemu"
   },
   "web_accessible_resources": [
       "images/*.png"
