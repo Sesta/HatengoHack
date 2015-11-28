@@ -5,9 +5,12 @@
   "description": "すごく面白い拡張",
   "permissions": [ "http://210.140.71.3:8080/" ],
   "browser_action": {
-    "default_icon": "image/batloika.png",
+    "default_icon": "images/batloika.png",
     "default_title": "Batloika"
   },
+  "web_accessible_resources": [
+      "images/*.png"
+  ],
   "background": {
     "scripts": [
       "extension_click_listener.js"
@@ -27,6 +30,6 @@
     }
   ],
   "icons": {
-    "128": "image/batloika.png"
+    "128": "images/batloika.png"
   }
 }
