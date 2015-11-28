@@ -12,10 +12,11 @@ $(function(){
 
       entries[ $( this ).attr( "data-eid" ) ] = {
         id: $( this ).attr( "data-eid" ),
+        users_num: $users.find( "span" ).text(),
         url: $( this ).find( ".entry-contents a" ).attr( "href" ),
         svg_height: $users.height(),
         svg_width: $users.width(),
-        dom: this
+        dom: this,
       };
     } );
 
@@ -24,9 +25,12 @@ $(function(){
     if( request.type != "batloika_clicked" ) return ;
 
     $.ajax( {
-      type: "GET",
-      url: "http://210.140.71.3:8080/hello",
+      type: "POST",
+      url: "http://210.140.71.3:8080/negaposi",
       dataType: "json",
+      data : {
+        "urls": [ "http://techlife.cookpad.com/entry/2015/11/27/194316" ]
+      },
       success: function( json ){
         console.log( json );
       }
@@ -35,6 +39,8 @@ $(function(){
     for( entry_id in entries ){
       setWave( null, entries[ entry_id ] );
     }
+
+    showed = true;
   } );
 
 
@@ -52,10 +58,10 @@ $(function(){
           "z-index": "0"
         } );
 
-    var wave = loadLiquidFillGauge("wave-" + entry.id, 50);
+    var wave = loadLiquidFillGauge("wave-" + entry.id, 50, null, entry.users_num);
     var config1 = liquidFillGaugeDefaultSettings();
 
-    showed = true;
+    $( entry.dom ).find( ".users strong" ).remove();
   }
 });
 
