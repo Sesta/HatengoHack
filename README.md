@@ -1,9 +1,11 @@
 # HatengoHack
-hackasonで作る予定のChrome拡張です
+hackasonで作ったchrome拡張です
+
+今は https://github.com/Battloika/Hatemu に移動してます
 
 ## 注意点
 https://github.com/suiyujin/hatenadwango
-が動いてないとグラフがでるだけです。
+を動かさないと何もでません
 
 ## 動かし方
 
